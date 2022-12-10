@@ -83,14 +83,14 @@ flutter:
           weight: 700
         - asset: assets/fonts/Raleway-Black.ttf
           weight: 900
-    - family: RbotoCondensed
+    - family: RobotoCondensed
       fonts:
-        - asset: assets/fonts/RbotoCondensed-Regular.ttf
-        - asset: assets/fonts/RbotoCondensed-Bold.ttf
+        - asset: assets/fonts/RobotoCondensed-Regular.ttf
+        - asset: assets/fonts/RobotoCondensed-Bold.ttf
           weight: 700
-        - asset: assets/fonts/RbotoCondensed-Light.ttf
+        - asset: assets/fonts/RobotoCondensed-Light.ttf
           weight: 300
-        - asset: assets/fonts/RbotoCondensed-Italic.ttf
+        - asset: assets/fonts/RobotoCondensed-Italic.ttf
           style: italic
   #   - family: Trajan Pro
   #     fonts:
