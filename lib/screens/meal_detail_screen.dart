@@ -4,6 +4,7 @@ import '../dummy_data.dart';
 class MealDetailScreen extends StatelessWidget {
   // const MealDetailScreen({Key? key}) : super(key: key);
   static const routeName = '/meal-detail';
+  // final mediaQuery = MediaQuery.of(context);
 
   Widget titleBuilder(BuildContext context, title) {
     return Container(
@@ -19,7 +20,7 @@ class MealDetailScreen extends StatelessWidget {
 
   Widget buildContainer(BuildContext context, Widget Child) {
     return Container(
-      width: 250,
+      width: 280,
       height: 150,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -39,44 +40,50 @@ class MealDetailScreen extends StatelessWidget {
         return mealId == element.id;
       },
     );
-    // final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(mealDetails.title)),
-      body: Column(children: [
-        Image.network(
-          mealDetails.imageUrl,
-          // fit: BoxFit.cover,
-        ),
-        titleBuilder(context, 'Ingredients'),
-        buildContainer(
-          context,
-          ListView(
-            children: mealDetails.ingredients.map((e) {
-              return Card(
-                color: Theme.of(context).colorScheme.secondary,
-                child: Text(
-                  e as String,
-                  textAlign: TextAlign.center,
-                ),
-              );
-            }).toList(),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Image.network(
+            mealDetails.imageUrl,
+            // fit: BoxFit.cover,
           ),
-        ),
-        titleBuilder(context, "Steps"),
-        buildContainer(
-          context,
-          ListView.builder(
-            itemCount: mealDetails.steps.length,
-            itemBuilder: (ctx, index) => ListTile(
-              leading: CircleAvatar(child: Text('# ${index + 1}')),
-              title: Text(
-                mealDetails.steps[index],
-                textAlign: TextAlign.center,
+          titleBuilder(context, 'Ingredients'),
+          buildContainer(
+            context,
+            ListView(
+              children: mealDetails.ingredients.map((e) {
+                return Card(
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Text(
+                    e as String,
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          titleBuilder(context, "Steps"),
+          buildContainer(
+            context,
+            ListView.builder(
+              itemCount: mealDetails.steps.length,
+              itemBuilder: (ctx, index) => Column(
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(child: Text('# ${index + 1}')),
+                    title: Text(
+                      mealDetails.steps[index],
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  const Divider(),
+                ],
               ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
