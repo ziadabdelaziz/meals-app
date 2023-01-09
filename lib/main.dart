@@ -21,7 +21,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // const MyApp({super.key});
 
-  List<Meal> _abailableMeals = DUMMY_MEALS;
+  List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoritMeals = [];
 
   Map<String, bool> _filters = {
     'gluten-free': false,
@@ -34,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _filters = newFilters;
 
-      _abailableMeals = DUMMY_MEALS.where((meal) {
+      _availableMeals = DUMMY_MEALS.where((meal) {
         if (_filters['gluten-free']! && !meal.isGlutenFree) {
           return false;
         }
@@ -57,6 +58,24 @@ class _MyAppState extends State<MyApp> {
         gravity: ToastGravity.BOTTOM,
       );
     });
+  }
+
+  void _toggleFavorite(String mealId) {
+    final exestingMeal = _favoritMeals.indexWhere((meal) => meal.id == mealId);
+
+    if (exestingMeal >= 0) {
+      setState(() {
+        _favoritMeals.removeAt(exestingMeal);
+      });
+    } else {
+      setState(() {
+        _favoritMeals.add(_availableMeals.firstWhere((meal) => meal.id == mealId));
+      });
+    }
+  }
+
+  bool _isFavorit(String mealId) {
+    return _favoritMeals.any((meal) => meal.id == mealId);
   }
 
   // This widget is the root of your application.
@@ -92,14 +111,15 @@ class _MyAppState extends State<MyApp> {
             )),
       ),
 
-      home: TabScreen(),
+      home: TabScreen(_favoritMeals),
       // initialRoute: '/',
       routes: {
         // '/': (ctx) => TabScreen(),
         CategoryMealsScreen.routeName: (ctx) =>
-            CategoryMealsScreen(_abailableMeals),
-        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(updateFilters, _filters),
+            CategoryMealsScreen(_availableMeals),
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen(_toggleFavorite, _isFavorit),
+        FiltersScreen.routeName: (ctx) =>
+            FiltersScreen(updateFilters, _filters),
       },
       onUnknownRoute: ((settings) {
         return MaterialPageRoute(
